@@ -1,2 +1,0 @@
-execute if score $HedgeMaze_GreenGate_Animating __variable__ matches 1 run function hedge_maze:__private__/if_else/80
-execute if score $HedgeMaze_GreenGate_Animating __variable__ matches 0 unless score $HedgeMaze_GreenGate_Current __variable__ = $HedgeMaze_GreenGate_Next __variable__ run function hedge_maze:__private__/if_else/81

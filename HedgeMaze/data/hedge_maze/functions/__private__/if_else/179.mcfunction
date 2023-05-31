@@ -1,2 +1,0 @@
-scoreboard players set $HedgeMaze_YellowGate_Animating __variable__ 1
-scoreboard players set $HedgeMaze_YellowGate_Iterations __variable__ 0

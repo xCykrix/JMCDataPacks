@@ -1,3 +1,0 @@
-execute if score $HedgeMaze_BlackGate_SelfReset __variable__ matches 0 as @e[tag=HedgeMazeBlackGate,tag=Door,limit=1] at @s run function hedge_maze:__private__/anonymous/0
-execute if score $HedgeMaze_BlackGate_Animating __variable__ matches 0 if score $HedgeMaze_BlackGate_Animating_Lock __variable__ matches 0 as @e[tag=HedgeMazeBlackGate] at @s if entity @a[distance=..3] run function hedge_maze:__private__/if_else/2
-execute if score $HedgeMaze_Ticker __variable__ matches 5 if score $HedgeMaze_BlackGate_SelfReset __variable__ matches 1 run function hedge_maze:blackgate/_run

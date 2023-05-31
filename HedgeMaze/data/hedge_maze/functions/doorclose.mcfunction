@@ -1,1 +1,0 @@
-tellraw @s {"text":"You hear some leaves rustle behind you...","italic":true,"color":"gray"}

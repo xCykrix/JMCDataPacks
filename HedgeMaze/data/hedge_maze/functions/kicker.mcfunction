@@ -1,1 +1,0 @@
-execute if entity @s[tag=HedgeMazeRunner] run function hedge_maze:__private__/anonymous/41

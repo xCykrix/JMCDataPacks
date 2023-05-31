@@ -1,2 +1,0 @@
-scoreboard players set $HedgeMaze_GreenGate_Animating __variable__ 1
-scoreboard players set $HedgeMaze_GreenGate_Iterations __variable__ 0

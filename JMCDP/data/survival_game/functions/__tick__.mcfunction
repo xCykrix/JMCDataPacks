@@ -1,2 +1,0 @@
-execute if score $GameActive __variable__ matches 0 run function survival_game:__private__/if_else/1
-execute if score $GameActive __variable__ matches 1 run function survival_game:__private__/if_else/15

@@ -1,3 +1,0 @@
-execute if score $HedgeMaze_CyanGate_SelfReset __variable__ matches 0 as @e[tag=HedgeMazeCyanGate,tag=Door,limit=1] at @s run function hedge_maze:__private__/anonymous/6
-execute if score $HedgeMaze_CyanGate_Animating __variable__ matches 0 if score $HedgeMaze_CyanGate_Animating_Lock __variable__ matches 0 as @e[tag=HedgeMazeCyanGate] at @s if entity @a[distance=..3] run function hedge_maze:__private__/if_else/30
-execute if score $HedgeMaze_Ticker __variable__ matches 5 if score $HedgeMaze_CyanGate_SelfReset __variable__ matches 1 run function hedge_maze:cyangate/_run

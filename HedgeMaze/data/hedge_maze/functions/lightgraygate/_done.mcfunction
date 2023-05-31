@@ -1,4 +1,0 @@
-scoreboard players set $HedgeMaze_LightGrayGate_Iterations __variable__ 0
-scoreboard players set $HedgeMaze_LightGrayGate_Animating __variable__ 0
-scoreboard players set $HedgeMaze_LightGrayGate_Animating_Lock __variable__ 0
-scoreboard players operation $HedgeMaze_LightGrayGate_Current __variable__ = $HedgeMaze_LightGrayGate_Next __variable__
