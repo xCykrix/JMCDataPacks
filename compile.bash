@@ -7,10 +7,9 @@ read -p "ProjectID: " ProjectID
 
 while true
 do
-	# (
-	# 	cd "./$ProjectID" && ~/JMC.bin compile
-	# )
-	# read -p "Press Enter to Compile"
-	sleep 3
-	echo 'hi'
+	mkdir "./out"
+	read -p "Compile: Press Enter to Build and Package"
+	(
+		cd "./$ProjectID" && ../JMC.bin compile && zip -r "../out/$ProjectID.zip" "./data"
+	)
 done
