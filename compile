@@ -1,9 +1,10 @@
-mkdir out
+echo "ProjectID: "
+read ProjectID
 
 while true
 do
-	(cd HedgeMaze && rm -f ../out/HedgeMaze.zip && "P:\WinRAR\WinRAR.exe" a -afzip ../out/HedgeMaze.zip data/** pack.mcmeta)
-	(cd JMCDP && rm -f ../out/JMCDP.zip && "P:\WinRAR\WinRAR.exe" a -afzip ../out/JMCDP.zip data/** pack.mcmeta)
-	read -n 1 -p "Press Enter..."
-	sleep 1;
+	(
+		cd "./$ProjectID" && l
+	)
+	read -p "Press Enter to Compile"
 done
