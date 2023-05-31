@@ -1,0 +1,1 @@
+execute if score @s SurvivalGameGenerate matches 1 run function survival_game:__private__/if_else/10

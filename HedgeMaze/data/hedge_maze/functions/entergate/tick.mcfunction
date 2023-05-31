@@ -1,0 +1,3 @@
+execute if score $HedgeMaze_EnterGate_SelfReset __variable__ matches 0 as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run function hedge_maze:__private__/anonymous/9
+execute if score $HedgeMaze_InProgress __variable__ matches 0 if score $HedgeMaze_EnterGate_Animating __variable__ matches 0 if score $HedgeMaze_EnterGate_Animating_Lock __variable__ matches 0 as @e[tag=HedgeMazeEnterGate] at @s if entity @a[distance=..2] run function hedge_maze:__private__/if_else/44
+execute if score $HedgeMaze_Ticker __variable__ matches 5 if score $HedgeMaze_EnterGate_SelfReset __variable__ matches 1 run function hedge_maze:entergate/_run

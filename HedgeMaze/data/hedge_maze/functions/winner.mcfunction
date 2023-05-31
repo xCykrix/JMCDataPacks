@@ -1,0 +1,1 @@
+execute if entity @s run function hedge_maze:__private__/anonymous/40

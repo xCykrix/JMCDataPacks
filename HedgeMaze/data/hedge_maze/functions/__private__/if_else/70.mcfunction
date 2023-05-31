@@ -1,0 +1,2 @@
+execute if entity @s[tag=Open] if score $HedgeMaze_GreenGate_Current __variable__ matches 0 run function hedge_maze:__private__/if_else/68
+execute if entity @s[tag=Close] if score $HedgeMaze_GreenGate_Current __variable__ matches 1 unless score @s[tag=Close] HedgeMazeBlacklist matches 1 run function hedge_maze:__private__/if_else/69

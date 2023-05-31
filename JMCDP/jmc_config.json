@@ -1,0 +1,7 @@
+{
+    "namespace": "survival_game",
+    "description": "Survival Game in Vanilla Minecraft",
+    "pack_format": "10",
+    "target": "main.jmc",
+    "output": "."
+}

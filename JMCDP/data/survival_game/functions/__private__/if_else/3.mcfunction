@@ -1,0 +1,1 @@
+scoreboard players add $PlayersLeft __variable__ 1

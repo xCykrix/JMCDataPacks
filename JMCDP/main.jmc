@@ -1,0 +1,141 @@
+
+// Static Initialization
+scoreboard objectives remove SurvivalGameGenerate;
+scoreboard objectives remove SurvivalGameDeath;
+scoreboard objectives add SurvivalGameGenerate dummy;
+scoreboard objectives add SurvivalGameDeath deathCount;
+
+// Static Variable Reset
+$GameActive = 0;
+$PlayersLeft = 0;
+$RNG = 1;
+
+// Start Game Function
+function start() {
+    if ($GameActive == 0) {
+        tag @a remove SurvivalGameFighter;
+        execute as @a[nbt={Dimension:"minecraft:survival_game"}] at @s run {
+            tag @s add SurvivalGameFighter;
+        }
+        spreadplayers 170 -38 50 250 under 150 false @a[nbt={Dimension:"minecraft:survival_game"}];
+        execute in minecraft:survival_game run worldborder set 50 1800;
+        $GameActive = 1;
+    }
+}
+
+// Game Tick
+function __tick__() {
+    if ($GameActive == 0) {
+        if ($PlayersLeft >= 1) {
+            $PlayersLeft = 0;
+        }
+        tick();
+    }
+
+    if ($GameActive == 1) {
+        // Reset Death Conditions.
+        $PlayersLeft = 0;
+
+        // Execute as Fighters for Iteration.
+        execute as @a[tag=SurvivalGameFighter,nbt={Dimension:"minecraft:survival_game"}] at @s run {
+            if (score @s SurvivalGameDeath matches 1..) {
+                gamemode spectator @s;
+                tag @s remove SurvivalGameFighter;
+                scoreboard players set @s SurvivalGameDeath 0;
+                tellraw @s "SG:DeathMessage";
+            } else {
+                $PlayersLeft += 1;
+            }
+        }
+
+        // Execute and Check as Last Fighter for Win Condition.
+        execute as @p[tag=SurvivalGameFighter,nbt={Dimension:"minecraft:survival_game"}] at @s run {
+            if ($PlayersLeft == 1) {
+                tp @s 170 55 -38;
+                tellraw @s "SG:WinnerMessage";
+                execute in minecraft:survival_game run worldborder set 700 3;
+                $GameActive = 0;
+            }
+        }
+
+        // Process Chest Looting
+        execute as @e[tag=IsRandomChest] at @s run {
+            if (!(score @s SurvivalGameGenerate matches 1)) {
+                if (entity @s[tag=RandomChest1] && $RNG = 1) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+
+                    if (entity @s[name="COMMON_RNG1"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:common_chest"};
+                    }
+
+                    if (entity @s[name="RARE_RNG1"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:rare_chest"};
+                    }
+
+                    if (entity @s[name="LEGENDARY_RNG1"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:legendary"};
+                    }
+                }
+                if (entity @s[tag=RandomChest2] && $RNG = 2) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+
+                    if ( entity @s[name="COMMON_RNG2"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:common_chest"};
+                    }
+
+                    if (entity @s[name="RARE_RNG2"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:rare_chest"};
+                    }
+
+                    if (entity @s[name="LEGENDARY_RNG2"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:legendary_chest"};
+                    }
+                }
+                if (entity @s[tag=RandomChest3] && $RNG = 3) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+
+                    if (entity @s[name="COMMON_RNG3"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:common_chest"};
+                    }
+
+                    if (entity @s[name="RARE_RNG3"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:rare_chest"};
+                    }
+
+                    if (entity @s[name="LEGENDARY_RNG3"]) {
+                        setblock ~ ~ ~ chest{"LootTable":"draft:legendary_chest"};
+                    }
+                }
+
+                // Flag Generated
+                scoreboard players set @s SurvivalGameGenerate 1;
+            } else if (score @s SurvivalGameGenerate matches 1) {
+                if ($RNG == 1 && (entity @s[tag=RandomChest2] || entity @s[tag=RandomChest3])) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+                }
+
+                if ($RNG == 2 && (entity @s[tag=RandomChest1] || entity @s[tag=RandomChest3])) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+                }
+
+                if ($RNG == 3 && (entity @s[tag=RandomChest1] || entity @s[tag=RandomChest2])) {
+                    setblock ~ ~ ~ air;
+                    kill @e[type=item,distance=..3];
+                }
+            }
+        }
+    }
+}
+
+// Tick the Internal RNG
+function tick() {
+    if ($RNG >= 3) {
+        $RNG = 0;
+    }
+    $RNG += 1;
+}

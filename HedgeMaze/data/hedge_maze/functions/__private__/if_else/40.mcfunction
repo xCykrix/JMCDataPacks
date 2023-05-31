@@ -1,0 +1,2 @@
+execute if score $HedgeMaze_CyanGate_Current __variable__ matches 0 run function hedge_maze:__private__/if_else/34
+execute if score $HedgeMaze_CyanGate_Current __variable__ matches 1 run function hedge_maze:__private__/if_else/39

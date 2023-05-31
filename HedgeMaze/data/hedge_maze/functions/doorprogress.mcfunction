@@ -1,0 +1,1 @@
+tellraw @s {"text":"You hear some leaves shift open in the distance with a small gust of wind. Perhaps you can proceed further?","italic":true,"color":"gray"}

@@ -1,0 +1,2 @@
+scoreboard players set $HedgeMaze_WhiteGate_Animating __variable__ 1
+scoreboard players set $HedgeMaze_WhiteGate_Iterations __variable__ 0

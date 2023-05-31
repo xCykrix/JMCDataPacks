@@ -1,0 +1,7 @@
+{
+    "namespace": "hedge_maze",
+    "description": "HedgeMaze Builder",
+    "pack_format": "10",
+    "target": "main.jmc",
+    "output": "."
+}

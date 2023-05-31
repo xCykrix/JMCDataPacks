@@ -1,0 +1,106 @@
+@import "door/*";
+
+// Settings
+$HedgeMazeEnableAnimations = 0;
+
+// Variables
+$HedgeMaze_InProgress = 0;
+$HedgeMaze_Ticker = 0;
+$HedgeMaze_Seconds = 0;
+scoreboard objectives remove HedgeMazeBlacklist;
+scoreboard objectives add HedgeMazeBlacklist dummy;
+scoreboard objectives add HedgeMazeWinner dummy;
+scoreboard objectives add HedgeMazeTime dummy;
+
+// Register the Join Ejection.
+Player.rejoin(kicker);
+
+function __tick__() {
+    if ($HedgeMaze_Ticker >= 5) {
+        $HedgeMaze_Ticker = 0;
+    }
+    $HedgeMaze_Ticker++;
+
+    // Check for Winning Condition.
+    if ($HedgeMaze_Ticker == 1 && entity @a[tag=HedgeMazeRunner]) {
+        execute as @e[tag=HedgeMazeWin,limit=1] at @s run {
+            execute as @a[tag=HedgeMazeRunner,distance=..4] run {
+                winner();
+            }
+        }
+    }
+
+    // Kick Players from the Maze.
+    if ($HedgeMaze_Ticker == 3 && $HedgeMaze_InProgress == 0) {
+        execute as @a[tag=HedgeMazeRunner] run {
+            kicker();
+        }
+        $HedgeMaze_InProgress = 0;
+    }
+
+    if (entity @a[tag=HedgeMazeRunner]) {
+        if ($HedgeMaze_Seconds >= 20) {
+            execute as @a[tag=HedgeMazeRunner] run {
+                scoreboard players add @s HedgeMazeTime 1;
+            }
+            $HedgeMaze_Seconds = 0;
+        }
+        $HedgeMaze_Seconds++;
+    }
+
+    // Tick Gates and Processors
+    EnterGate.tick();
+    WhiteGate.tick();   
+    LightGrayGate.tick();
+    GrayGate.tick();
+    BlackGate.tick();
+    BrownGate.tick();
+    RedGate.tick();
+    OrangeGate.tick();
+    YellowGate.tick();
+    LimeGate.tick();
+    GreenGate.tick();
+    CyanGate.tick();
+    LightBlueGate.tick();
+}
+
+function winner() {
+    execute as @s run {
+        $HedgeMaze_InProgress = 0;
+        scoreboard players add @s HedgeMazeWinner 1;
+        tellraw @s [{"text":"You feel the rush of air from the exit of the maze, ending your time. You finished in ","italic":true,"color":"gray"},{"score":{"name":"@s","objective":"HedgeMazeTime"},"color":"blue"},{"text":" seconds. You have completed the maze ","italic":true,"color":"gray"},{"score":{"name":"@s","objective":"HedgeMazeWinner"},"color":"blue"},{"text":" times.","italic": true,"color":"gray"}];
+        scoreboard players set @s HedgeMazeTime 0;
+        tag @s remove HedgeMazeRunner;
+        EnterGate.refresh();
+    }
+}
+
+function doorOpen() {
+    tellraw @s {"text":"You hear some leaves shift in the distance...","italic":true,"color":"gray"};
+}
+
+function doorClose() {
+    tellraw @s {"text":"You hear some leaves rustle behind you...","italic":true,"color":"gray"};
+}
+
+function doorProgress() {
+    tellraw @s {"text":"You hear some leaves shift open in the distance with a small gust of wind. Perhaps you can proceed further?","italic":true,"color":"gray"};
+}
+
+function kicker() {
+    execute as @s[tag=HedgeMazeRunner] run {
+        tp @s @e[tag=HedgeMazeEject,limit=1];
+        tag @s remove HedgeMazeRunner;
+        tellraw @s {"text":"You feel the leaves rush around you, sweeping you away to the beginning.","italic":true,"color":"gray"};
+    }
+}
+
+// Spawn "Win" Armor Stand
+function win() {
+    summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeWin"]};
+}
+
+// Spawn "Eject" Armor Stand
+function eject() {
+    summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeEject"]};
+}

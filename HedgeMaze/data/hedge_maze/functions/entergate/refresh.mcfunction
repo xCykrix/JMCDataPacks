@@ -1,0 +1,12 @@
+scoreboard players set $HedgeMaze_WhiteGate_Next __variable__ 0
+scoreboard players set $HedgeMaze_LightGrayGate_Next __variable__ 0
+scoreboard players set $HedgeMaze_GrayGate_Next __variable__ 0
+scoreboard players set $HedgeMaze_BlackGate_Next __variable__ 0
+scoreboard players set $HedgeMaze_BrownGate_Next __variable__ 0
+scoreboard players set $HedgeMaze_RedGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_OrangeGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_YellowGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_GreenGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_LimeGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_CyanGate_Next __variable__ 1
+scoreboard players set $HedgeMaze_LightBlueGate_Next __variable__ 1
