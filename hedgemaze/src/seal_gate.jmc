@@ -1,0 +1,60 @@
+function tick_seal() {
+    execute as @e[type=armor_stand,tag=HedgeMazeController,limit=1] at @s run {
+        Hardcode.repeatLists(
+            ["$GateID", "$Concrete"],
+            () => {
+                // Reset Gate
+                execute as @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Door,limit=1] at @s run {
+                    if (!(score @s HedgeMazeResetList matches 1)) {
+                        fill ~-1 ~ ~1 ~1 ~6 ~-1 oak_leaves[persistent=true];
+                        fill ~-1 ~1 ~1 ~1 ~1 ~-1 $Concrete;
+                        scoreboard players set @s HedgeMazeResetList 1;
+                        tag @s add IsClosed;
+                        tag @s remove IsOpen;
+                    }
+                }
+
+                // Check Opening View
+                execute as @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Open,limit=1] at @s run {
+                    if (entity @p[distance=..3,tag=HedgeMazePlayer] && entity @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Door,tag=IsClosed,limit=1]) {
+                        execute as @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Door,limit=1] at @s run {
+                            fill ~-1 ~ ~1 ~1 ~6 ~-1 air;
+                            tag @s add IsOpen;
+                            tag @s remove IsClosed;
+                            progress();
+                        }
+                    }
+                }
+
+                // Check Closing View
+                execute as @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Close,limit=1] at @s run {
+                    if (entity @p[distance=..3,tag=HedgeMazePlayer] && entity @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Door,tag=IsOpen,limit=1]) {
+                        execute as @e[type=armor_stand,distance=..255,tag=HedgeMaze$GateID,tag=Door,limit=1] at @s run {
+                            fill ~-1 ~ ~1 ~1 ~6 ~-1 oak_leaves[persistent=true];
+                            fill ~-1 ~1 ~1 ~1 ~1 ~-1 $Concrete;
+                            tag @s add IsClosed;
+                            tag @s remove IsOpen;
+                            close();
+                        }
+                    }
+                }
+            },
+            [
+                ["WhiteGate", "LightGrayGate", "GrayGate", "BlackGate", "BrownGate"],
+                ["white_concrete", "light_gray_concrete", "gray_concrete", "black_concrete", "brown_concrete"]
+            ]
+        );
+    }
+}
+
+function sealed_setup() {
+    Hardcode.repeatList(
+        "$GateID",
+        () => {
+            give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"$GateID_DOOR"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMaze$GateID","Door"]},display:{Name:'[{"text":"$GateID_DOOR","italic":false}]'}} 1;
+            give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"$GateID_OPEN"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMaze$GateID","Open"]},display:{Name:'[{"text":"$GateID_OPEN","italic":false}]'}} 1;
+            give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"$GateID_CLOSE"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMaze$GateID","Close"]},display:{Name:'[{"text":"$GateID_CLOSE","italic":false}]'}} 1;
+        },
+        ["WhiteGate", "LightGrayGate", "GrayGate", "BlackGate", "BrownGate"]
+    );
+}

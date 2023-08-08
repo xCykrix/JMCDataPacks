@@ -1,0 +1,42 @@
+
+import "command.jmc";
+import "src/*";
+
+// Variables
+$HedgeMaze_InProgress = 0;
+scoreboard objectives remove HedgeMazeResetList;
+scoreboard objectives remove HedgeMazeTriggeredList;
+scoreboard objectives add HedgeMazeResetList dummy;
+scoreboard objectives add HedgeMazeTriggeredList dummy;
+scoreboard objectives add HedgeMazeWinner dummy;
+scoreboard objectives add HedgeMazeLeaderboard dummy;
+scoreboard objectives add HedgeMazeCurrentTime dummy;
+
+function start() {
+    // Load and Schedule Basic
+    schedule function tick_animated() 1t replace;
+
+    // Load and Schedule Sealed Gate
+    schedule function tick_seal() 2t replace;
+
+    // Load and Schedule Trap Gate
+    schedule function tick_trap() 3t replace;
+
+    // Tick Game
+    schedule function tick_game() 4t replace;
+
+    // Schedule Next Batch Tick
+    schedule function start() 5t replace;
+}
+
+function counter() {
+    execute as @a[tag=HedgeMazePlayer] run {
+        scoreboard players add @s HedgeMazeCurrentTime 1;
+    }
+
+    schedule function counter() 1s replace;
+}
+
+schedule function start() 1s replace;
+// schedule function counter() 1s replace;
+Player.rejoin(kick);

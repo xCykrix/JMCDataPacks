@@ -1,0 +1,128 @@
+$HedgeMaze_EnterGate_SelfReset = 0;
+$HedgeMaze_EnterGate_Animating = 0;
+$HedgeMaze_EnterGate_Animating_Lock = 0;
+$HedgeMaze_EnterGate_Iterations = 0;
+$HedgeMaze_EnterGate_Current = 1;
+$HedgeMaze_EnterGate_Next = 0;
+
+class EnterGate {
+    function tick() {
+        if ($HedgeMaze_EnterGate_SelfReset == 0) {
+            execute as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run {
+                tp @s @e[tag=HedgeMazeEnterGate,tag=Reset,limit=1];
+                fill ~-1 ~ ~1 ~1 ~6 ~-1 air;
+                $HedgeMaze_EnterGate_SelfReset = 1;
+            }
+        }
+
+        if ($HedgeMaze_InProgress == 0 && $HedgeMaze_EnterGate_Animating == 0 && $HedgeMaze_EnterGate_Animating_Lock == 0) {
+            execute as @e[tag=HedgeMazeEnterGate] at @s run {
+                if(entity @a[distance=..2]) {
+                    if (entity @s[tag=Open] && $HedgeMaze_EnterGate_Current == 0) {
+                        $HedgeMaze_EnterGate_Next = 1;
+                        $HedgeMaze_EnterGate_Animating_Lock = 1;
+                    }
+                    if (entity @s[tag=Close] && $HedgeMaze_EnterGate_Current == 1) {
+                        execute as @a[distance=..2] run {
+                            tag @s add HedgeMazeRunner;
+                            close();
+                        }
+                        $HedgeMaze_InProgress = 1;
+                        $HedgeMaze_EnterGate_Next = 0;
+                        $HedgeMaze_EnterGate_Animating_Lock = 1;
+                        EnterGate.refresh();
+                    }
+                }
+            }
+        }
+
+        if ($HedgeMaze_Ticker == 5 && $HedgeMaze_EnterGate_SelfReset == 1) {
+            EnterGate._run();
+        }
+    }
+
+    function _run() {
+        if ($HedgeMaze_EnterGate_Animating == 1) {
+            if ($HedgeMaze_EnterGate_Current == 0) {
+                if ($HedgeMaze_EnterGate_Iterations <= 6 && $HedgeMaze_EnterGate_Current != $HedgeMaze_EnterGate_Next) {
+                    if ($HedgeMaze_EnterGate_Iterations == 0) {
+                        tp @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] @e[tag=HedgeMazeEnterGate,tag=Reset,limit=1];
+                        execute as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run {
+                            tp @s ~ ~6 ~;
+                        }
+                    }
+                    execute as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run {
+                        fill ~1 ~ ~-1 ~-1 ~ ~1 air;
+                        tp @s ~ ~-1 ~;
+                    }
+                    $HedgeMaze_EnterGate_Iterations++;
+                } else {
+                    tp @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] @e[tag=HedgeMazeEnterGate,tag=Reset,limit=1];
+                    EnterGate._done();
+                }
+            }
+
+            if ($HedgeMaze_EnterGate_Current == 1) {
+                if ($HedgeMaze_EnterGate_Iterations <= 6 && $HedgeMaze_EnterGate_Current != $HedgeMaze_EnterGate_Next) {
+                    if ($HedgeMaze_EnterGate_Iterations == 0) {
+                        execute as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run {
+                            tp @s @e[tag=HedgeMazeEnterGate,tag=Reset,limit=1];
+                        }
+                    }
+                    execute as @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] at @s run {
+                        fill ~1 ~ ~-1 ~-1 ~ ~1 oak_leaves[persistent=true];
+                        tp @s ~ ~1 ~;
+                    }
+                    $HedgeMaze_EnterGate_Iterations++;
+                } else {
+                    tp @e[tag=HedgeMazeEnterGate,tag=Door,limit=1] @e[tag=HedgeMazeEnterGate,tag=Reset,limit=1];
+                    EnterGate._done();
+                }
+            }
+        }
+
+        if ($HedgeMaze_EnterGate_Animating == 0 && $HedgeMaze_EnterGate_Current != $HedgeMaze_EnterGate_Next) {
+            $HedgeMaze_EnterGate_Animating = 1;
+            $HedgeMaze_EnterGate_Iterations = 0;
+        }
+
+    }
+
+    function _done() {
+        $HedgeMaze_EnterGate_Iterations = 0;
+        $HedgeMaze_EnterGate_Animating = 0;
+        $HedgeMaze_EnterGate_Animating_Lock = 0;
+        $HedgeMaze_EnterGate_Current = $HedgeMaze_EnterGate_Next;
+    }
+
+    function refresh() {
+        $HedgeMaze_WhiteGate_Next = 0;
+        $HedgeMaze_LightGrayGate_Next = 0;
+        $HedgeMaze_GrayGate_Next = 0;
+        $HedgeMaze_BlackGate_Next = 0;
+        $HedgeMaze_BrownGate_Next = 0;
+        $HedgeMaze_RedGate_Next = 1;
+        $HedgeMaze_OrangeGate_Next = 1;
+        $HedgeMaze_YellowGate_Next = 1;
+        $HedgeMaze_GreenGate_Next = 1;
+        $HedgeMaze_LimeGate_Next = 1;
+        $HedgeMaze_CyanGate_Next = 1;
+        $HedgeMaze_LightBlueGate_Next = 1;
+    }
+
+    function door() {
+        summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeEnterGate", "Door"]};
+    }
+
+    function open() {
+        summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeEnterGate", "Open"]};
+    }
+
+    function close() {
+        summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeEnterGate", "Close"]};
+    }
+
+    function reset() {
+        summon armor_stand ~ ~ ~ {NoGravity:1b,Silent:1b,Invulnerable:1b,ShowArms:0b,Small:1b,Invisible:1b,NoBasePlate:1b,Tags:["HedgeMazeEnterGate", "Reset"]};
+    }
+}
