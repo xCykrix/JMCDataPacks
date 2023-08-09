@@ -1,5 +1,3 @@
-
-import "command.jmc";
 import "src/*";
 
 // Variables
@@ -10,7 +8,6 @@ scoreboard objectives add HedgeMazeResetList dummy;
 scoreboard objectives add HedgeMazeTriggeredList dummy;
 scoreboard objectives add HedgeMazeWinner dummy;
 scoreboard objectives add HedgeMazeLeaderboard dummy;
-scoreboard objectives add HedgeMazeCurrentTime dummy;
 
 function start() {
     // Load and Schedule Basic
@@ -37,6 +34,41 @@ function counter() {
     schedule function counter() 1s replace;
 }
 
+// Main Logic
 schedule function start() 1s replace;
-// schedule function counter() 1s replace;
+
+// Kick Event
 Player.rejoin(kick);
+
+function open() {
+    tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves shift in the distance...","italic":true,"color":"gray"};
+}
+
+function close() {
+    tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves rustle behind you...","italic":true,"color":"gray"};
+}
+
+function progress() {
+    tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves shift open in the distance with a small gust of wind. Perhaps you can proceed further?","italic":true,"color":"gray"};
+}
+
+function kick() {
+    execute as @s[tag=HedgeMazePlayer] at @s run {
+        tp @s @e[type=armor_stand,distance=..512,tag=HedgeMazeEject,limit=1];
+        tag @s remove HedgeMazePlayer;
+        tellraw @s {"text":"You feel the leaves rush around you, sweeping you away to the beginning.","italic":true,"color":"gray"};
+    }
+    scoreboard objectives remove HedgeMazeResetList;
+    scoreboard objectives remove HedgeMazeTriggeredList;
+    scoreboard objectives add HedgeMazeResetList dummy;
+    scoreboard objectives add HedgeMazeTriggeredList dummy;
+}
+
+function main_setup() {
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_CONTROLLER"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeController"]},display:{Name:'[{"text":"CONTROLLER","italic":false}]'}} 1;
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_START"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeStart"]},display:{Name:'[{"text":"START","italic":false}]'}} 1;
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_DETECT_WINNER"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeFindWinner"]},display:{Name:'[{"text":"DETECT_WINNER","italic":false}]'}} 1;
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_EJECT"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeEject"]},display:{Name:'[{"text":"EJECT","italic":false}]'}} 1;
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_FINALIZE"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeFinalize"]},display:{Name:'[{"text":"FINAL_MODE","italic":false}]'}} 1;
+    give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_EDIT"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeEdit"]},display:{Name:'[{"text":"EDIT_MODE","italic":false}]'}} 1;
+}

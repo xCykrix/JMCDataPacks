@@ -22,7 +22,7 @@ while true; do
   echo "Building and Compiling..."
   (jmc compile && cd "../output/$PROJECT_ID" && zip -r "../../dist/$PROJECT_ID.zip" "./")
   echo "Compiled to dist..."
-
+  
   if [[ "$QUICK" == "Y" ]]; then
     break
   fi

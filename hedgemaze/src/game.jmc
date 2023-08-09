@@ -37,12 +37,7 @@ function tick_game() {
             execute as @e[type=armor_stand,distance=..255,tag=HedgeMazeFindWinner,limit=1] at @s run {
                 if (entity @a[distance=..3,tag=HedgeMazePlayer]) {
                     execute as @a[distance=..3,tag=HedgeMazePlayer] run {
-                        // save leaderboard
-                        // if (score @s HedgeMazeLeaderboard > @s HedgeMazeCurrentTime) {
-                        //     scoreboard players operation @s HedgeMazeLeaderboard = @s HedgeMazeCurrentTime;
-                        // }
 
-                        // ... rewards ...
                     }
                     $HedgeMaze_InProgress = 0;
                 }

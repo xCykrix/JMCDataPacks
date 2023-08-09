@@ -1,0 +1,2 @@
+import "command.jmc";
+import "src/*";
