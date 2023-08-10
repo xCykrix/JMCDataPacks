@@ -29,7 +29,8 @@ while true; do
 
   echo "[build] Executing 'jmc compile' and building output..."
   (jmc compile && cd "../output/$PROJECT_ID" && zip -r "../../output/$PROJECT_ID.zip" "./")
-  
+  . ../deploy.sh
+
   if [[ "$QUICK" == "Y" ]]; then
     break
   fi
