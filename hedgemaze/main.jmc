@@ -26,8 +26,6 @@ function start() {
     // Schedule Next Batch Tick
     schedule function start() 5t replace;
 }
-
-// Main Logic
 schedule function start() 1s replace;
 
 // Kick Event
@@ -54,11 +52,11 @@ function kick() {
         tp @s @e[type=armor_stand,distance=..512,tag=HedgeMazeEject,limit=1];
         tag @s remove HedgeMazePlayer;
         tellraw @s {"text":"You feel the leaves rush around you, sweeping you away to the beginning.","italic":true,"color":"gray"};
+        scoreboard objectives remove HedgeMazeResetList;
+        scoreboard objectives remove HedgeMazeTriggeredList;
+        scoreboard objectives add HedgeMazeResetList dummy;
+        scoreboard objectives add HedgeMazeTriggeredList dummy;
     }
-    scoreboard objectives remove HedgeMazeResetList;
-    scoreboard objectives remove HedgeMazeTriggeredList;
-    scoreboard objectives add HedgeMazeResetList dummy;
-    scoreboard objectives add HedgeMazeTriggeredList dummy;
 }
 
 // Core Setup
