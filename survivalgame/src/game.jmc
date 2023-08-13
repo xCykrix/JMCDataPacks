@@ -1,0 +1,98 @@
+import "./chests.jmc";
+
+// Game: Tick
+function tick_survivalgame_0() {
+  if ($SurvivalGame_0_Active == 0) {
+    if ($SurvivalGame_0_PlayersLeft >= 1) {
+      $SurvivalGame_0_PlayersLeft = 0;
+    }
+  }
+
+  if ($SurvivalGame_0_Active == 1) {
+    // Reset Death Counters.
+    $SurvivalGame_0_PlayersLeft = 0;
+
+    // Count Fighters.
+    execute as @e[tag=SurvivalGame_0_Fighter,nbt={Dimension:"minecraft:survival_game"}] run {
+      if (score @s SurvivalGame_0_Death matches 1..) {
+        // Update Player
+        gamemode spectator @s;
+        tellraw @s "SG:Death";
+
+        // Cleanup Tracking
+        scoreboard players set @s SurvivalGame_0_Death 0;
+        tag @s remove SurvivalGame_0_Fighter;
+      } else {
+        $SurvivalGame_0_PlayersLeft += 1;
+      }
+    }
+
+    // Win Condition
+    if ($SurvivalGame_0_PlayersLeft == 1) {
+      execute as @p[tag=SurvivalGame_0_Fighter,nbt={Dimension:"minecraft:survival_game"}] run {
+        // Update Players and State
+        tellraw @s "SG:WinnerMessage";
+
+        // Cleanup Tracking and Return Players to Hub
+        execute as @e[tag=SurvivalGame_0_Fighter,nbt={Dimension:"minecraft:survival_game"}] run {
+          scoreboard players set @s SurvivalGame_0_Death 0;
+          tag @s remove SurvivalGame_0_Fighter;
+        }
+        execute as @a[nbt={Dimension:"minecraft:survival_game"}] run {
+          execute in minecraft:survival_game run {
+            tp @s 170 55 -38; 
+            gamemode survival @s;
+          }
+        }
+
+        // Reset State
+        execute in minecraft:survival_game run {
+          worldborder set 700 3;
+        }
+        $SurvivalGame_0_Active = 0;
+      }
+    }
+  }
+
+  // Generate Chests
+  generate_chest_survivalgame_0();
+
+  // Loop if Active.
+  if ($SurvivalGame_0_Active == 1) {
+    schedule function tick_survivalgame_0() 10t replace;
+  }
+}
+
+// Game: Start
+function start_survivalgame_0() {
+  if ($SurvivalGame_0_Active == 0) {
+    tag @a remove SurvivalGame_0_Fighter;
+    execute as @a[nbt={Dimension:"minecraft:survival_game"}] run {
+      tag @s add SurvivalGame_0_Fighter;
+      gamemode survival @s;
+    }
+
+    // Reset State
+    scoreboard objectives remove SurvivalGame_0_Generate;
+    scoreboard objectives add SurvivalGame_0_Generate dummy;
+
+    // Update World
+    execute in minecraft:survival_game run worldborder set 700;
+    // spreadplayers 170 -38 50 250 under 150 false @a[nbt={Dimension:"minecraft:survival_game"}];
+    execute in minecraft:survival_game run worldborder set 50 1800;
+    $SurvivalGame_0_Active = 1;
+    tick_survivalgame_0();
+  }
+}
+
+// Game: Seed
+function tick_seed_survivalgame_0() {
+  if (!$SurvivalGame_0_Active == 1) {
+    if ($SurvivalGame_0_RollingSeed >= 3) {
+        $SurvivalGame_0_RollingSeed = 0;
+    }
+    $SurvivalGame_0_RollingSeed += 1;
+  }
+    
+  schedule function tick_seed_survivalgame_0() 5s replace;
+}

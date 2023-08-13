@@ -1,3 +1,12 @@
-import "src/*";
+$SurvivalGame_0_Active = 0;
+$SurvivalGame_0_PlayersLeft = 0;
+$SurvivalGame_0_RollingSeed = 1;
 
-tell xCykrix reloaded;
+scoreboard objectives remove SurvivalGame_0_Generate;
+scoreboard objectives remove SurvivalGame_0_Death;
+scoreboard objectives add SurvivalGame_0_Generate dummy;
+scoreboard objectives add SurvivalGame_0_Death deathCount;
+
+import "src/game.jmc";
+
+tick_seed_survivalgame_0();

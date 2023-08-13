@@ -1,0 +1,65 @@
+function generate_chest_survivalgame_0() {
+  execute in minecraft:survival_game as @e[tag=IsRandomChest] at @s run {
+    if (!(score @s SurvivalGame_0_Generate matches 1)) {
+      loot replace block ~ ~ ~ container.0 27 loot minecraft:empty;
+      setblock ~ ~ ~ air;
+
+      // Seed 1
+      if ($SurvivalGame_0_RollingSeed == 1 && entity @s[tag=RandomChest1]) {
+        if (entity @s[name="COMMON_RNG1"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:common"};
+        }
+        if (entity @s[name="RARE_RNG1"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:rare"};
+        }
+        if (entity @s[name="LEGENDARY_RNG1"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:legend"};
+        }
+      }
+
+      // Seed 2
+      if ($SurvivalGame_0_RollingSeed == 2 && entity @s[tag=RandomChest2]) {
+        if (entity @s[name="COMMON_RNG2"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:common"};
+        }
+        if (entity @s[name="RARE_RNG2"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:rare"};
+        }
+        if (entity @s[name="LEGENDARY_RNG2"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:legend"};
+        }
+      }
+
+      // Seed 3
+      if ($SurvivalGame_0_RollingSeed == 3 && entity @s[tag=RandomChest3]) {
+        if (entity @s[name="COMMON_RNG3"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:common"};
+        }
+        if (entity @s[name="RARE_RNG3"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:rare"};
+        }
+        if (entity @s[name="LEGENDARY_RNG3"]) {
+          setblock ~ ~ ~ chest{"LootTable":"managed_loot:legend"};
+        }
+      }
+
+      // Flag Generated
+      scoreboard players set @s SurvivalGame_0_Generate 1;
+    } else if (score @s SurvivalGame_0_Generate matches 1) {
+      if ($SurvivalGame_0_RollingSeed == 1 && (entity @s[tag=RandomChest2] || entity @s[tag=RandomChest3])) {
+        loot replace block ~ ~ ~ container.0 27 loot minecraft:empty;
+        setblock ~ ~ ~ air;
+      }
+
+      if ($SurvivalGame_0_RollingSeed == 2 && (entity @s[tag=RandomChest1] || entity @s[tag=RandomChest3])) {
+        loot replace block ~ ~ ~ container.0 27 loot minecraft:empty;
+        setblock ~ ~ ~ air;
+      }
+
+      if ($SurvivalGame_0_RollingSeed == 3 && (entity @s[tag=RandomChest1] || entity @s[tag=RandomChest2])) {
+        loot replace block ~ ~ ~ container.0 27 loot minecraft:empty;
+        setblock ~ ~ ~ air;
+      }
+    }
+  }
+}
