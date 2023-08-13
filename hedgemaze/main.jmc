@@ -9,6 +9,7 @@ scoreboard objectives add HedgeMazeTriggeredList dummy;
 scoreboard objectives add HedgeMazeWinner dummy;
 scoreboard objectives add HedgeMazeLeaderboard dummy;
 
+// Main Logic
 function start() {
     // Load and Schedule Basic
     schedule function tick_animated() 1t replace;
@@ -26,32 +27,28 @@ function start() {
     schedule function start() 5t replace;
 }
 
-function counter() {
-    execute as @a[tag=HedgeMazePlayer] run {
-        scoreboard players add @s HedgeMazeCurrentTime 1;
-    }
-
-    schedule function counter() 1s replace;
-}
-
 // Main Logic
 schedule function start() 1s replace;
 
 // Kick Event
 Player.rejoin(kick);
 
+// Open Message
 function open() {
     tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves shift in the distance...","italic":true,"color":"gray"};
 }
 
+// Close Message
 function close() {
     tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves rustle behind you...","italic":true,"color":"gray"};
 }
 
+// Progress Message
 function progress() {
     tellraw @a[tag=HedgeMazePlayer] {"text":"You hear some leaves shift open in the distance with a small gust of wind. Perhaps you can proceed further?","italic":true,"color":"gray"};
 }
 
+// Kick Message and Reset
 function kick() {
     execute as @s[tag=HedgeMazePlayer] at @s run {
         tp @s @e[type=armor_stand,distance=..512,tag=HedgeMazeEject,limit=1];
@@ -64,6 +61,7 @@ function kick() {
     scoreboard objectives add HedgeMazeTriggeredList dummy;
 }
 
+// Core Setup
 function main_setup() {
     give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_CONTROLLER"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeController"]},display:{Name:'[{"text":"CONTROLLER","italic":false}]'}} 1;
     give @p armor_stand{EntityTag:{NoBasePlate:1b,DisabledSlots:0,CustomName:'[{"text":"HM_START"}]',Invulnerable:1b,NoAI:1b,NoGravity:1b,Silent:1b,Tags:["HedgeMaze","HedgeMazeStart"]},display:{Name:'[{"text":"START","italic":false}]'}} 1;
