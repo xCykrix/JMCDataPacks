@@ -16,11 +16,12 @@ function tick_survivalgame_0() {
     execute as @e[tag=SurvivalGame_0_Fighter,nbt={Dimension:"minecraft:survival_game"}] run {
       if (score @s SurvivalGame_0_Death matches 1..) {
         // Update Player
-        gamemode spectator @s;
         tellraw @s "SG:Death";
+        gamemode spectator @s;
 
         // Cleanup Tracking
         scoreboard players set @s SurvivalGame_0_Death 0;
+        scoreboard players remove @s deaths 1;
         tag @s remove SurvivalGame_0_Fighter;
       } else {
         $SurvivalGame_0_PlayersLeft += 1;
