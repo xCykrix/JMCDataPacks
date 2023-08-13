@@ -3,5 +3,5 @@
     "description": "PVP Battle Arenas for Lunaris",
     "pack_format": 15,
     "target": "main.jmc",
-    "output": "../output/arena/"
+    "output": "../.output/arena/"
 }

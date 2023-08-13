@@ -10,9 +10,9 @@ if [[ "$PROJECT_ID" == "JMC" || "$PROJECT_ID" == "JMCDataPacks" ]]; then
 fi
 
 # Create Structure
-if [[ ! -d "../output/" ]]; then
-  echo "[build] Generating 'output' path..."
-  mkdir -p ../output/
+if [[ ! -d "../.output/" ]]; then
+  echo "[build] Generating '.output' path..."
+  mkdir -p ../.output/
 fi
 
 # Build
@@ -23,12 +23,12 @@ while true; do
   fi
 
   # Compile
-  echo "[build] Cleaning up 'output' path for '$PROJECT_ID'..."
-  rm -f "../output/$PROJECT_ID.zip"
-  rm -rf "../output/$PROJECT_ID"
+  echo "[build] Cleaning up '.output' path for '$PROJECT_ID'..."
+  rm -f "../.output/$PROJECT_ID.zip"
+  rm -rf "../.output/$PROJECT_ID"
 
-  echo "[build] Executing 'jmc compile' and building output..."
-  (jmc compile && cd "../output/$PROJECT_ID" && zip -r "../../output/$PROJECT_ID.zip" "./")
+  echo "[build] Executing 'jmc compile' and building ./.output..."
+  (jmc compile && cd "../.output/$PROJECT_ID" && zip -r "../../.output/$PROJECT_ID.zip" "./")
   . ../deploy.sh
 
   if [[ "$QUICK" == "Y" ]]; then

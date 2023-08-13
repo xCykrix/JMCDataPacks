@@ -3,5 +3,5 @@
     "description": "PVP Battle Royal for Lunaris",
     "pack_format": 15,
     "target": "main.jmc",
-    "output": "../output/survivalgame/"
+    "output": "../.output/survivalgame/"
 }
